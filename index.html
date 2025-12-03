@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title></title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80');
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .glass {
+        width: 320px;
+        padding: 25px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.08);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.2);
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        animation: fadeIn .8s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translate(-50%, -40%); }
+        to   { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 12px;
+        border: none;
+        outline: none;
+        background: rgba(255,255,255,0.15);
+        color: white;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 15px;
+        border-radius: 12px;
+        border: none;
+        background: #0aff9d;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    #domainUI {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        width: 100%;
+        height: 100vh;
+        backdrop-filter: blur(15px);
+        transition: .6s ease;
+        padding: 20px;
+        color: white;
+    }
+
+    .card {
+        width: 330px;
+        padding: 25px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.15);
+        backdrop-filter: blur(25px);
+        margin-top: 70px;
+    }
+
+    .domainBtn {
+        margin-top: 15px;
+        background: rgba(255,255,255,0.1);
+        padding: 10px;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN UI -->
+<div id="loginUI" class="glass">
+    <h2 style="margin-top:0;">Login to Access Domains</h2>
+    <input id="email" placeholder="Email">
+    <input id="user" placeholder="Username">
+    <input id="pass" placeholder="Password" type="password">
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- DOMAIN UI -->
+<div id="domainUI">
+    <h2>Domains</h2>
+
+    <div class="domainBtn" onclick="openCard('CVWT', 'Chill Verse Website Testers')">
+        CVWT
+    </div>
+    <div class="domainBtn" onclick="openCard('CODERS', 'Coders Association')">
+        Coders Association
+    </div>
+    <div class="domainBtn" onclick="openCard('EDITORS', 'Editors Club')">
+        Editors Club
+    </div>
+    <div class="domainBtn" onclick="openCard('OFFICE', 'Office Holders Verse')">
+        Office Holders Verse
+    </div>
+
+    <div id="domainCard" class="card" style="display:none;">
+        <h3 id="cardTitle"></h3>
+        <p id="cardDesc" style="opacity:.7;"></p>
+
+        <input id="joinEmail" placeholder="Enter email to join">
+        <button onclick="submitEmail()">Join</button>
+    </div>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyf-8LnQKKpIxzvY1QsVZI2jQF_7oMxprxCWrrFJTPDNBqrdZs_Folw4GZI2Iz5phM-_A/exec";
+
+let currentDomain = "";
+
+function login() {
+    let e = email.value.trim();
+    let u = user.value.trim();
+    let p = pass.value.trim();
+
+    if (!e || !u || !p) { alert("Fill all fields"); return; }
+
+    // slide animation
+    loginUI.style.left = "-100%";
+    domainUI.style.left = "0";
+}
+
+function openCard(code, desc) {
+    currentDomain = code;
+    cardTitle.innerText = code;
+    cardDesc.innerText = desc;
+    domainCard.style.display = "block";
+}
+
+function submitEmail() {
+    let j = joinEmail.value.trim();
+    if (!j) return alert("Enter email");
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+            domain: currentDomain,
+            email: j,
+            username: user.value
+        })
+    });
+
+    alert("Registered!");
+}
+
+</script>
+
+</body>
+</html>
 
